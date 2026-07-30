@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gridplan"
+version = "0.1.0"
+description = "DC-OPF congestion analysis and MILP-based transmission expansion planning"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Bonnie Bingham" }]
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "pyomo>=6.7",
+    "highspy>=1.7",
+]
+
+[project.optional-dependencies]
+viz = ["matplotlib", "networkx", "pyvis"]
+gnn = ["torch"]
+app = ["streamlit", "pandas", "matplotlib", "networkx", "pyvis"]
+dev = ["pytest"]
+all = ["matplotlib", "networkx", "pyvis", "torch", "streamlit", "pandas", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/bbplus3/gridplan"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,10 @@
+bus_id,name,zone,base_kv
+1,North_Substation_A,North,230
+2,North_Substation_B,North,230
+3,North_Wind_Interconnect,North,230
+4,Central_Hub,Central,230
+5,Central_Load_A,Central,115
+6,Central_Load_B,Central,115
+7,South_Substation_A,South,230
+8,South_Load_A,South,115
+9,South_Peaker_Plant,South,230

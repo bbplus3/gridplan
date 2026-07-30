@@ -1,0 +1,4 @@
+gen_id,bus_id,name,capacity_mw,marginal_cost_per_mwh,fuel_type
+G1,1,North_Baseload_Gas,400,28.0,gas
+G2,3,North_Wind_Farm,180,0.0,wind
+G3,9,South_Peaker,220,65.0,gas_peaker

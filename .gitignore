@@ -1,0 +1,32 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Streamlit
+.streamlit/
+
+# Generated outputs (regenerate via the scripts - keep the repo light)
+outputs/*.png
+outputs/*.html
+!outputs/.gitkeep
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Solver logs
+*.log
+
+# packaging
+*.egg-info/
+build/
+dist/
+.pytest_cache/
