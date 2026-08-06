@@ -5,3 +5,4 @@ pyvis
 pandas
 networkx
 gridplan[gnn]
+torch==2.6.0
