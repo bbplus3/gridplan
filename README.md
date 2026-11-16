@@ -86,6 +86,16 @@ disjunctive/big-M formulation: a candidate line's power-flow equation is
 only enforced when its build variable is 1. The objective weighs one-time
 capital cost against annualized operating + reliability cost.
 
+**GNN power-flow surrogate (`gridplan.gnn`, optional `[gnn]`).** Simulates
+thousands of randomized load scenarios, solves each with the exact DC model
+to build a training set, and trains a graph neural network to approximate
+power flow from grid topology. This is a demonstration of the technique, not
+a production speedup: at the sizes gridplan targets, the exact linear solve is
+both faster and exact, and the module is upfront about that. It's here to show
+how a learned surrogate is built and trained — and to make honest when it would
+and wouldn't pay off on a larger system. See the module docstring for that
+discussion.
+
 ## Package layout
 
 ```
