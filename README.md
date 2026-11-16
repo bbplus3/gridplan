@@ -24,13 +24,19 @@ print(plan.summary())
 ## Install
 
 ```bash
+pip install gridplan              # core: Network, solve_congestion, solve_expansion
+pip install "gridplan[viz]"       # + static/interactive network diagrams
+pip install "gridplan[gnn]"       # + GNN power-flow surrogate (needs torch)
+pip install "gridplan[app]"       # + Streamlit browser app
+pip install "gridplan[all]"       # everything
+```
+
+Or install from source to get the examples and app files:
+
+```bash
 git clone https://github.com/bbplus3/gridplan.git
 cd gridplan
-pip install -e .              # core: Network, solve_congestion, solve_expansion
-pip install -e ".[viz]"       # + static/interactive network diagrams
-pip install -e ".[gnn]"       # + GNN power-flow surrogate (needs torch)
-pip install -e ".[app]"       # + Streamlit browser app
-pip install -e ".[all]"       # everything
+pip install -e ".[all]"
 ```
 
 No separate solver binary needed — `highspy` (the HiGHS solver, pure pip
@@ -38,6 +44,9 @@ install) is a core dependency, used by default for both the LP congestion
 model and the MILP expansion planning model.
 
 ## Quickstart
+
+From a source checkout (the `examples/` and `app.py` files aren't shipped in
+the pip package):
 
 ```bash
 python examples/quickstart.py
