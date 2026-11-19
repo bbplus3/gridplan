@@ -43,9 +43,64 @@ No separate solver binary needed — `highspy` (the HiGHS solver, pure pip
 install) is a core dependency, used by default for both the LP congestion
 model and the MILP expansion planning model.
 
-## Quickstart
+## Quick start (pip only, no checkout needed)
 
-From a source checkout (the `examples/` and `app.py` files aren't shipped in
+You don't need the repo to try gridplan — `pip install gridplan` gives you the
+full modeling core, and you can build a network in a few lines of Python. Save
+this as `gridplan_demo.py` and run `python gridplan_demo.py`:
+
+```python
+from gridplan import Network, Bus, Line, Generator, solve_congestion, solve_expansion
+
+net = Network()
+for b in (1, 2, 3):
+    net.buses[b] = Bus(b, f"Bus {b}", "A", 230.0)
+
+# cheap generation at bus 1, an expensive peaker at bus 3
+net.generators["G1"] = Generator("G1", 1, "Cheap",  300, 20, "hydro")
+net.generators["G3"] = Generator("G3", 3, "Peaker", 300, 80, "gas")
+
+# a limited direct corridor (1-3), the longer 1-2-3 path, and a candidate reinforcement
+net.lines["L13"]  = Line("L13",  1, 3, 0.07, 60,  "existing", 40)
+net.lines["L12"]  = Line("L12",  1, 2, 0.10, 100, "existing", 60)
+net.lines["L23"]  = Line("L23",  2, 3, 0.10, 100, "existing", 60)
+net.lines["L13b"] = Line("L13b", 1, 3, 0.07, 120, "candidate", 40, cost_million_usd=20)
+
+net.snapshots = ["peak"]
+net.loads = {"peak": {3: 220.0}}  # 220 MW of demand at bus 3
+
+res = solve_congestion(net, "peak")
+print(res.summary())
+print("LMPs ($/MWh):", res.lmps)
+
+plan = solve_expansion(net)
+print(plan.summary())
+```
+
+Output:
+
+```
+[peak] status=optimal  total_cost=$12,740
+  binding lines: L13
+LMPs ($/MWh): {1: 20.0, 2: 50.0, 3: 80.0}
+status=optimal  objective=$100,066,400
+  build: L13b ($20.0M capital)
+```
+
+The direct line `L13` is the binding constraint, so the cheap generator at bus 1
+can't fully reach the load — the price separates from $20/MWh at bus 1 to $80/MWh
+at bus 3, where the peaker has to run. The expansion model then weighs the cost of
+reinforcing that corridor against the congestion it relieves, and recommends
+building the $20M line.
+
+Field order is `Line(id, from_bus, to_bus, reactance_pu, capacity_mw, status,
+length_km[, cost_million_usd])` and `Generator(id, bus_id, name, capacity_mw,
+marginal_cost_per_mwh, fuel_type)`.
+
+## Quickstart from a source checkout
+
+To run the bundled 9-bus sample system or the Streamlit app, use a source
+checkout (the `examples/` and `app.py` files aren't shipped in
 the pip package):
 
 ```bash
